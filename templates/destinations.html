@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abella's Travel Guide - Destinations</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('destinations') }}">Destinations</a>
+    <a href="{{ url_for('about') }}">About Us</a>
+    <a href="{{ url_for('contact') }}">Contact Us</a>
+  </nav>
+
+  <!-- Header Section -->
+  <header>
+    <h1>Abella's Travel Guide</h1>
+    <p>Explore the most beautiful destinations!</p>
+  </header>
+
+  <!-- Destinations Section -->
+  <section id="destinations">
+    <h2>Our Top Destinations</h2>
+
+    <!-- Destination Box for Naga -->
+    <div class="destination-box">
+      <h3>Naga</h3>
+      <img src="{{ url_for('static', filename='naga.JPG') }}" alt="Naga" />
+      <details>
+        <summary>More about Naga</summary>
+        <ul>
+          <li>Visit the Naga Cathedral, a centuries-old church</li>
+          <li>Explore the Naga Heritage Museum</li>
+          <li>Enjoy scenic boat rides on the Naga River</li>
+        </ul>
+      </details>
+    </div>
+
+    <!-- Destination Box for Inayagan -->
+    <div class="destination-box">
+      <h3>Inayagan</h3>
+      <img src="{{ url_for('static', filename='inayagan.JPG') }}" alt="Inayagan" />
+      <details>
+        <summary>More about Inayagan</summary>
+        <ul>
+          <li>Hike to breathtaking panoramic views</li>
+          <li>Swim in the clear mountain waterfalls</li>
+          <li>Stroll through the quiet countryside</li>
+        </ul>
+      </details>
+    </div>
+
+    <!-- Destination Box for Minglanilla -->
+    <div class="destination-box">
+      <h3>Minglanilla</h3>
+      <img src="{{ url_for('static', filename='minglanilla.JPG') }}" alt="Minglanilla" />
+      <details>
+        <summary>More about Minglanilla</summary>
+        <ul>
+          <li>Experience the colorful Minglanilla fiesta</li>
+          <li>Relax at beautiful beaches and resorts</li>
+          <li>Visit historical sites like the Minglanilla Church</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Abella's Travel Guide. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>

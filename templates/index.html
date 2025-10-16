@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abella's Travel Guide</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('destinations') }}">Destinations</a>
+    <a href="{{ url_for('about') }}">About Us</a>
+    <a href="{{ url_for('contact') }}">Contact Us</a>
+
+    <!-- Login and SignUp buttons -->
+    <div class="auth-buttons">
+      <a href="{{ url_for('login') }}" class="auth-button">Login</a>
+      <a href="{{ url_for('signup') }}" class="auth-button">Sign Up</a>
+    </div>
+  </nav>
+
+  <main>
+    <header>
+      <h1>EXPLORE. DREAM. DISCOVER.</h1>
+      <p>This is a world travel blog featuring beautiful destinations, new experiences, and hidden places around the globe.<br>Please tag along!</p>
+      <div class="cta-buttons">
+        <a href="{{ url_for('local') }}">View Localities</a>
+        <a href="{{ url_for('guide') }}">Guide and Tips</a>
+        <a href="{{ url_for('try_page') }}">Donate</a> <!-- Updated here -->
+      </div>
+    </header>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Abella's Travel Guide. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
