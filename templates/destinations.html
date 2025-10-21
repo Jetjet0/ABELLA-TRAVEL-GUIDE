@@ -8,12 +8,23 @@
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Navigation (WITHOUT Destinations) -->
   <nav>
     <a href="{{ url_for('index') }}">Home</a>
-    <a href="{{ url_for('destinations') }}">Destinations</a>
     <a href="{{ url_for('about') }}">About Us</a>
     <a href="{{ url_for('contact') }}">Contact Us</a>
+
+    {% if session.loggedin %}
+      <div class="user-nav">
+        <span class="username-display">Hi, {{ session.username }}!</span>
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+      </div>
+    {% else %}
+      <div class="auth-buttons">
+        <a href="{{ url_for('login') }}" class="auth-button">Login</a>
+        <a href="{{ url_for('signup') }}" class="auth-button">Sign Up</a>
+      </div>
+    {% endif %}
   </nav>
 
   <!-- Header Section -->
@@ -24,47 +35,53 @@
 
   <!-- Destinations Section -->
   <section id="destinations">
-    <h2>Our Top Destinations</h2>
+    <h2 class="top-destinations-title">Our Top Destinations</h2>
 
-    <!-- Destination Box for Naga -->
+    <!-- 1. NAGA - BLUE BOX (ALREADY DONE) -->
     <div class="destination-box">
       <h3>Naga</h3>
       <img src="{{ url_for('static', filename='naga.JPG') }}" alt="Naga" />
-      <details>
+      <details class="blue-details">
         <summary>More about Naga</summary>
-        <ul>
-          <li>Visit the Naga Cathedral, a centuries-old church</li>
-          <li>Explore the Naga Heritage Museum</li>
-          <li>Enjoy scenic boat rides on the Naga River</li>
-        </ul>
+        <div class="details-content">
+          <ul>
+            <li>Visit the Naga Cathedral, a centuries-old church</li>
+            <li>Explore the Naga Heritage Museum</li>
+            <li>Enjoy scenic boat rides on the Naga River</li>
+          </ul>
+        </div>
       </details>
     </div>
 
-    <!-- Destination Box for Inayagan -->
+    <!-- 2. INAYAGAN - BLUE BOX (ALREADY DONE) -->
     <div class="destination-box">
       <h3>Inayagan</h3>
       <img src="{{ url_for('static', filename='inayagan.JPG') }}" alt="Inayagan" />
-      <details>
+      <details class="blue-details">
         <summary>More about Inayagan</summary>
-        <ul>
-          <li>Hike to breathtaking panoramic views</li>
-          <li>Swim in the clear mountain waterfalls</li>
-          <li>Stroll through the quiet countryside</li>
-        </ul>
+        <div class="details-content">
+          <ul>
+            <li>Hike to breathtaking panoramic views</li>
+            <li>Swim in the clear mountain waterfalls</li>
+            <li>Stroll through the quiet countryside</li>
+          </ul>
+        </div>
       </details>
     </div>
 
-    <!-- Destination Box for Minglanilla -->
+    <!-- 3. MINGLANILLA - BLUE BOX (ALREADY DONE) -->
     <div class="destination-box">
       <h3>Minglanilla</h3>
       <img src="{{ url_for('static', filename='minglanilla.JPG') }}" alt="Minglanilla" />
-      <details>
+      <details class="blue-details">
         <summary>More about Minglanilla</summary>
-        <ul>
-          <li>Experience the colorful Minglanilla fiesta</li>
-          <li>Relax at beautiful beaches and resorts</li>
-          <li>Visit historical sites like the Minglanilla Church</li>
-        </ul>
+        <div class="details-content">
+          <ul>
+            <li>Experience the colorful Minglanilla fiesta</li>
+            <li>Relax at beautiful beaches and resorts</li>
+            <li>Visit historical sites like the Minglanilla Church</li>
+          </ul>
+        </div>
       </details>
     </div>
   </section>

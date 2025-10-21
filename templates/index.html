@@ -10,26 +10,44 @@
 
   <nav>
     <a href="{{ url_for('index') }}">Home</a>
-    <a href="{{ url_for('destinations') }}">Destinations</a>
     <a href="{{ url_for('about') }}">About Us</a>
     <a href="{{ url_for('contact') }}">Contact Us</a>
 
-    <!-- Login and SignUp buttons -->
-    <div class="auth-buttons">
-      <a href="{{ url_for('login') }}" class="auth-button">Login</a>
-      <a href="{{ url_for('signup') }}" class="auth-button">Sign Up</a>
-    </div>
+    {% if session.loggedin %}
+      <!-- LOGGED IN: Show ONLY Username + Logout -->
+      <div class="user-nav">
+        <span class="username-display">Hi, {{ session.username }}!</span>
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+      </div>
+    {% else %}
+      <!-- NOT LOGGED IN: Show Login/Signup -->
+      <div class="auth-buttons">
+        <a href="{{ url_for('login') }}" class="auth-button">Login</a>
+        <a href="{{ url_for('signup') }}" class="auth-button">Sign Up</a>
+      </div>
+    {% endif %}
   </nav>
 
   <main>
     <header>
       <h1>EXPLORE. DREAM. DISCOVER.</h1>
       <p>This is a world travel blog featuring beautiful destinations, new experiences, and hidden places around the globe.<br>Please tag along!</p>
-      <div class="cta-buttons">
-        <a href="{{ url_for('local') }}">View Localities</a>
-        <a href="{{ url_for('guide') }}">Guide and Tips</a>
-        <a href="{{ url_for('try_page') }}">Donate</a> <!-- Updated here -->
-      </div>
+
+      {% if session.loggedin %}
+        <!-- LOGGED IN: Show ALL CTA buttons (MIDDLE ONLY) -->
+        <div class="cta-buttons">
+          <a href="{{ url_for('destinations') }}">Destinations</a>
+          <a href="{{ url_for('local') }}">View Localities</a>
+          <a href="{{ url_for('guide') }}">Guide and Tips</a>
+          <a href="{{ url_for('try_page') }}">Donate</a>
+        </div>
+      {% else %}
+        <!-- NOT LOGGED IN: Show ONLY Login/Signup prompt -->
+        <div class="cta-buttons">
+          <a href="{{ url_for('signup') }}">Sign Up to Explore</a>
+          <a href="{{ url_for('login') }}">Login to Continue</a>
+        </div>
+      {% endif %}
     </header>
   </main>
 
