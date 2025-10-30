@@ -1,95 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="destinations-page">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Abella's Travel Guide - Destinations</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abella's Travel Guide - Destinations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="destinations-page">
+    <!-- Navigation -->
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+        <a href="{{ url_for('destinations') }}">Destinations</a>
 
-  <!-- Navigation (WITHOUT Destinations) -->
-  <nav>
-    <a href="{{ url_for('index') }}">Home</a>
-    <a href="{{ url_for('about') }}">About Us</a>
-    <a href="{{ url_for('contact') }}">Contact Us</a>
+        {% if session.get('logged_in') %}
+            <div class="user-nav">
+                <span class="username-display">Hi, {{ session.get('username') }}!</span>
+                <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+            </div>
+        {% else %}
+            <div class="auth-buttons">
+                <a href="{{ url_for('login') }}" class="auth-button">Login</a>
+                <a href="{{ url_for('signup') }}" class="auth-button">Sign Up</a>
+            </div>
+        {% endif %}
+    </nav>
 
-    {% if session.loggedin %}
-      <div class="user-nav">
-        <span class="username-display">Hi, {{ session.username }}!</span>
-        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
-      </div>
-    {% else %}
-      <div class="auth-buttons">
-        <a href="{{ url_for('login') }}" class="auth-button">Login</a>
-        <a href="{{ url_for('signup') }}" class="auth-button">Sign Up</a>
-      </div>
-    {% endif %}
-  </nav>
+    <!-- Header Section -->
+    <header>
 
-  <!-- Header Section -->
-  <header>
-    <h1>Abella's Travel Guide</h1>
-    <p>Explore the most beautiful destinations!</p>
-  </header>
+        <p>Explore the most beautiful destinations!</p>
+    </header>
 
-  <!-- Destinations Section -->
-  <section id="destinations">
-    <h2 class="top-destinations-title">Our Top Destinations</h2>
+    <!-- Destinations Section -->
+    <section id="destinations">
+        <h2 class="top-destinations-title">Our Top Destinations</h2>
 
-    <!-- 1. NAGA - BLUE BOX (ALREADY DONE) -->
-    <div class="destination-box">
-      <h3>Naga</h3>
-      <img src="{{ url_for('static', filename='naga.JPG') }}" alt="Naga" />
-      <details class="blue-details">
-        <summary>More about Naga</summary>
-        <div class="details-content">
-          <ul>
-            <li>Visit the Naga Cathedral, a centuries-old church</li>
-            <li>Explore the Naga Heritage Museum</li>
-            <li>Enjoy scenic boat rides on the Naga River</li>
-          </ul>
+        <!-- 1. NAGA -->
+        <div class="destination-box">
+            <h3>Naga</h3>
+            <div class="image-button-container">
+                <a href="{{ url_for('nagatour') }}">
+                    <img src="{{ url_for('static', filename='naga.jpg') }}" alt="Naga">
+                </a>
+                <a href="https://www.google.com/maps/place/Naga,+Cebu/" target="_blank" class="see-location-button">
+                    See the Location
+                </a>
+            </div>
         </div>
-      </details>
-    </div>
 
-    <!-- 2. INAYAGAN - BLUE BOX (ALREADY DONE) -->
-    <div class="destination-box">
-      <h3>Inayagan</h3>
-      <img src="{{ url_for('static', filename='inayagan.JPG') }}" alt="Inayagan" />
-      <details class="blue-details">
-        <summary>More about Inayagan</summary>
-        <div class="details-content">
-          <ul>
-            <li>Hike to breathtaking panoramic views</li>
-            <li>Swim in the clear mountain waterfalls</li>
-            <li>Stroll through the quiet countryside</li>
-          </ul>
+        <!-- 2. INAYAGAN -->
+        <div class="destination-box">
+            <h3>Inayagan</h3>
+            <div class="image-button-container">
+                <a href="{{ url_for('inayagantour') }}">
+                    <img src="{{ url_for('static', filename='inayagan.jpg') }}" alt="Inayagan">
+                </a>
+                <a href="https://www.google.com/maps/place/Inayagan,+Naga,+Cebu/" target="_blank" class="see-location-button">
+                    See the Location
+                </a>
+            </div>
         </div>
-      </details>
-    </div>
 
-    <!-- 3. MINGLANILLA - BLUE BOX (ALREADY DONE) -->
-    <div class="destination-box">
-      <h3>Minglanilla</h3>
-      <img src="{{ url_for('static', filename='minglanilla.JPG') }}" alt="Minglanilla" />
-      <details class="blue-details">
-        <summary>More about Minglanilla</summary>
-        <div class="details-content">
-          <ul>
-            <li>Experience the colorful Minglanilla fiesta</li>
-            <li>Relax at beautiful beaches and resorts</li>
-            <li>Visit historical sites like the Minglanilla Church</li>
-          </ul>
+        <!-- 3. MINGLANILLA -->
+        <div class="destination-box">
+            <h3>Minglanilla</h3>
+            <div class="image-button-container">
+                <a href="{{ url_for('mingtour') }}">
+                    <img src="{{ url_for('static', filename='minglanilla.jpg') }}" alt="Minglanilla">
+                </a>
+                <a href="https://www.google.com/maps/place/Minglanilla,+Cebu/" target="_blank" class="see-location-button">
+                    See the Location
+                </a>
+            </div>
         </div>
-      </details>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Abella's Travel Guide. All Rights Reserved.</p>
-  </footer>
-
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Abella's Travel Guide. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
+S

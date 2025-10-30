@@ -11,29 +11,22 @@ app.secret_key = 'abella_secret_key'
 app.config['PERMANENT_SESSION_LIFETIME'] = 1800  # 30 minutes
 
 # -----------------------------
-# SQLite Database configuration
+# The SQLite database configuration
 # -----------------------------
 DATABASE = 'abella_travel.db'
 
-
-# Function to get database connection
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row  # This allows dictionary-like access
+    conn.row_factory = sqlite3.Row
     return conn
 
-
-# Simple email validation (no regex)
 def is_valid_email(email):
     return '@' in email and '.' in email
 
-
-# Initialize database
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Create users table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,7 +37,6 @@ def init_db():
         )
     ''')
 
-    # Create contact_messages table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS contact_messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,19 +50,15 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 # -----------------------------
-# Home page
+# ROOT → ALWAYS SHOW LOGIN FIRST
 # -----------------------------
 @app.route('/')
-def index():
-    if 'loggedin' in session:
-        return render_template('index.html', username=session['username'])
+def root():
     return redirect(url_for('login'))
 
-
 # -----------------------------
-# Login
+# Login (FIRST PAGE)
 # -----------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -90,7 +78,7 @@ def login():
         conn.close()
 
         if account:
-            session['loggedin'] = True
+            session['logged_in'] = True
             session['id'] = account['id']
             session['username'] = account['username']
             flash('Login successful!', 'success')
@@ -99,7 +87,6 @@ def login():
             flash('Incorrect email or password.', 'error')
 
     return render_template('login.html')
-
 
 # -----------------------------
 # Signup / Register
@@ -111,7 +98,6 @@ def signup():
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
 
-        # Basic validation
         if not all([username, email, password]):
             flash('Please fill out all fields!', 'error')
             return render_template('signup.html')
@@ -120,12 +106,10 @@ def signup():
             flash('Password must be at least 6 characters long!', 'error')
             return render_template('signup.html')
 
-        # Simple email validation (no regex)
         if not is_valid_email(email):
             flash('Please enter a valid email address!', 'error')
             return render_template('signup.html')
 
-        # Check if user already exists
         conn = get_db_connection()
         existing_user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
 
@@ -134,7 +118,6 @@ def signup():
             conn.close()
             return render_template('signup.html')
 
-        # Insert new user
         try:
             conn.execute(
                 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
@@ -150,7 +133,6 @@ def signup():
 
     return render_template('signup.html')
 
-
 # -----------------------------
 # Logout
 # -----------------------------
@@ -160,17 +142,25 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
 
+# -----------------------------
+# Home Page (after login)
+# -----------------------------
+@app.route('/index')
+def index():
+    if 'logged_in' not in session:
+        flash('Please log in to access the site.', 'error')
+        return redirect(url_for('login'))
+    return render_template('index.html', username=session['username'])
 
 # -----------------------------
-# About Page
+# About Page (Public)
 # -----------------------------
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-
 # -----------------------------
-# Contact Page
+# Contact Page (Public)
 # -----------------------------
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -187,7 +177,6 @@ def contact():
             flash('Please enter a valid email address!', 'error')
             return render_template('contact.html')
 
-        # Save contact message to database
         conn = get_db_connection()
         conn.execute(
             'INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)',
@@ -201,50 +190,66 @@ def contact():
 
     return render_template('contact.html')
 
-
 # -----------------------------
-# Destinations Page
+# PROTECTED PAGES (Require Login)
 # -----------------------------
 @app.route('/destinations')
 def destinations():
-    if 'loggedin' in session:
-        return render_template('destinations.html', username=session['username'])
-    flash('Please log in to view this page.', 'error')
-    return redirect(url_for('login'))
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('destinations.html', username=session.get('username'))
 
-
-# -----------------------------
-# Local Destinations Page
-# -----------------------------
 @app.route('/local')
 def local():
-    if 'loggedin' in session:
-        return render_template('local.html', username=session['username'])
-    flash('Please log in to view this page.', 'error')
-    return redirect(url_for('login'))
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('local.html', username=session['username'])
 
-
-# -----------------------------
-# Guide Page
-# -----------------------------
 @app.route('/guide')
 def guide():
-    if 'loggedin' in session:
-        return render_template('guide.html', username=session['username'])
-    flash('Please log in to view this page.', 'error')
-    return redirect(url_for('login'))
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('guide.html', username=session['username'])
 
-
-# -----------------------------
-# Try Page
-# -----------------------------
 @app.route('/try')
 def try_page():
-    if 'loggedin' in session:
-        return render_template('try.html', username=session['username'])
-    flash('Please log in to view this page.', 'error')
-    return redirect(url_for('login'))
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('try.html', username=session['username'])
 
+# -----------------------------
+# NEW: Naga Tour Page
+# -----------------------------
+@app.route('/nagatour')
+def nagatour():
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('nagatour.html', username=session['username'])
+
+# -----------------------------
+# NEW: Minglanilla Tour Page
+# -----------------------------
+@app.route('/mingtour')
+def mingtour():
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('mingtour.html', username=session['username'])
+
+# -----------------------------
+# NEW: Inayagan Tour Page
+# -----------------------------
+@app.route('/inayagantour')
+def inayagantour():
+    if 'logged_in' not in session:
+        flash('Please log in to view this page.', 'error')
+        return redirect(url_for('login'))
+    return render_template('inayagantour.html', username=session['username'])
 
 # -----------------------------
 # Error Handlers
@@ -253,15 +258,13 @@ def try_page():
 def not_found(error):
     return render_template('404.html'), 404
 
-
 @app.errorhandler(500)
 def internal_error(error):
     return render_template('500.html'), 500
 
-
 # -----------------------------
-# Initialize database on first run
+# Initialize and Run
 # -----------------------------
 if __name__ == '__main__':
-    init_db()  # Create database and tables
+    init_db()
     app.run(debug=True, host='0.0.0.0', port=5000)
